@@ -1,0 +1,16 @@
+@startuml
+'autonumber is on to automatically number interactions
+autonumber
+
+User -> Frontend: Start Quiz
+Frontend -> APIGateway: Submit Quiz Answers
+APIGateway -> Lambda: Process Quiz Logic
+activate Lambda
+Lambda -> DynamoDB: Retrieve Breed Data
+DynamoDB --> Lambda: Return Breed Details
+deactivate Lambda
+Lambda --> APIGateway: Return Recommendation
+APIGateway --> Frontend: Return Recommended Breed
+Frontend --> User: Display Recommended Breed
+
+@enduml

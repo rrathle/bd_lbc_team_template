@@ -1,4 +1,4 @@
-# [Your Name] - [Team name] Accomplishment Tracking
+# [RAPHAEL ] - [Team name] Accomplishment Tracking
 
 Each team member should have their own version of this document.
 
@@ -36,9 +36,9 @@ instructors by the end of the unit._
 
 ## Week 1
 
-**Goals:**
+**Goals:** decide on design of project, purpose and overall coding plan
 
-**Activity:**
+**Activity:** set up dates for what needs to get accomplished in the project 
 
 **Important Docs, Commits, or Code Reviews**:
 
