@@ -1,0 +1,315 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "title": "DogQuiz",
+    "version": "0.0.2"
+  },
+  "paths": {
+    "/quiz/recommend/{sizePreference}/{energyPreference}/{hypoallergenic}": {
+      "post": {
+        "description": "accepts quiz answers and calculates the reccomeneded dog breed, and returns the userId",
+        "parameters": [
+          {
+            "name": "sizePreference",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "example": "Medium"
+            }
+          },
+          {
+            "name": "energyPreference",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "example": "low"
+            }
+          },
+          {
+            "name": "hypoallergenic",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "example": "No"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful recommendation with userId",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "userId": {
+                      "type": "string"
+                    },
+                    "dogBreed": {
+                      "type": "string"
+                    },
+                    "kennelClubLink": {
+                      "type": "string"
+                    }
+                  },
+                  "example": {
+                    "userId": "237hfbh",
+                    "dogBreed": "Golden Retriever",
+                    "kennelClubLink": "https://grca.org"
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "client Error Ivalid Quiz data",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "items": {
+                    "$ref": "#/components/schemas/Error"
+                  },
+                  "example": {
+                    "code": 400,
+                    "message": "user not found"
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "server Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "items": {
+                    "$ref": "#/components/schemas/Error"
+                  },
+                  "example": {
+                    "code": 500,
+                    "message": "server error"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/users/{userId}": {
+      "get": {
+        "description": "Get Dog Breed reccomendation from userID ",
+        "parameters": [
+          {
+            "name": "userId",
+            "in": "path",
+            "description": "the id for the user",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful recommendation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "dogBreed": {
+                      "type": "string"
+                    },
+                    "kennelClubLink": {
+                      "type": "string"
+                    }
+                  },
+                  "example": {
+                    "dogBreed": "Golden Retriever",
+                    "kennelClubLink": "https://grca.org"
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "usernot found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "items": {
+                    "$ref": "#/components/schemas/Error"
+                  },
+                  "example": {
+                    "code": 400,
+                    "message": "User not found"
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Server error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "items": {
+                    "$ref": "#/components/schemas/Error"
+                  },
+                  "example": {
+                    "code": 500,
+                    "message": "server error"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/quiz/recommend/{userId}": {
+      "patch": {
+        "description": "updates the quiz results using the persons quiz with their user id",
+        "parameters": [
+          {
+            "name": "userId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "example": "237hfbh"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "sizePreference": {
+                    "type": "string",
+                    "example": "Medium"
+                  },
+                  "energyPreference": {
+                    "type": "string",
+                    "example": "Low"
+                  },
+                  "hypoallergenic": {
+                    "type": "string",
+                    "example": "No"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successfully uodateed quiz results",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "string",
+                  "properties": {
+                    "dogBreed": {
+                      "type": "string"
+                    },
+                    "kennelClubLink": {
+                      "type": "string"
+                    }
+                  },
+                  "example": {
+                    "dogBreed": "Golden Retriever",
+                    "kennelClubLink": "https://grca.org"
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "client Error Ivalid Quiz data",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "items": {
+                    "$ref": "#/components/schemas/Error"
+                  },
+                  "example": {
+                    "code": 400,
+                    "message": "user not found"
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "server Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "items": {
+                    "$ref": "#/components/schemas/Error"
+                  },
+                  "example": {
+                    "code": 500,
+                    "message": "server error"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "QuizSubmission": {
+        "type": "object",
+        "properties": {
+          "userId": {
+            "type": "string"
+          },
+          "sizePreference": {
+            "type": "string"
+          },
+          "energyPreference": {
+            "type": "string"
+          },
+          "hypoallergenic": {
+            "type": "string"
+          },
+          "dogbreed": {
+            "type": "string"
+          },
+          "kennelClubLink": {
+            "type": "string"
+          }
+        }
+      },
+      "Error": {
+        "type": "object",
+        "properties": {
+          "code": {
+            "type": "integer"
+          },
+          "message": {
+            "type": "string"
+          }
+        }
+      }
+    }
+  }
+}

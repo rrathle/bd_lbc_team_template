@@ -115,7 +115,7 @@ purpose: stores dynamic data from each users quiz results
 String customerID;
 Map quizResults;
 String recommendedBreed;
-Stroing timeStampl 
+String timeStamp 
 ```
 
 *Define the data models your service will expose in its responses via your
@@ -124,7 +124,7 @@ Stroing timeStampl
 
 ## 6.2. *First Endpoint: PostRecommendedDogBreed*
 
-* Description: Accepts quiz answers, calculates recommended breed, and saves the result.
+* Description: Accepts quiz answers, provides user with unique Id, dog recommendation, and link to the reccomended dog breeds kennel club. Finally saves the dog saves the result under ID.
 * Post Http
 * Input: user quiz results
 * Output: Recommended dog breed and its kennel club link.

@@ -1,0 +1,85 @@
+openapi: 3.0.0
+info:
+  title: DogQuiz API
+  version: 1.0.0
+paths:
+  /quiz/recommend:
+    post:
+      summary: "Get recommended dog breed based on quiz answers"
+      description: |
+        This endpoint takes quiz answers as input and returns a recommended dog breed.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                sizePreference:
+                  type: string
+                  example: "Medium"
+                energyPreference:
+                  type: string
+                  example: "Low"
+                hypoallergenic:
+                  type: string
+                  example: "Yes"
+      responses:
+        "200":
+          description: "Successfully fetched dog breed recommendation"
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  userId:
+                    type: string
+                  dogBreed:
+                    type: string
+                  kennelClubLink:
+                    type: string
+                example:
+                  userId: "123456"
+                  dogBreed: "Golden Retriever"
+                  kennelClubLink: "https://grca.org"
+        "400":
+          description: "Invalid input data"
+        "500":
+          description: "Internal server error"
+      x-amazon-apigateway-integration:
+        type: "aws_proxy"
+        httpMethod: "POST"
+        uri: "arn:aws:apigateway:<region>:lambda:path/2015-03-31/functions/<lambda-arn>/invocations"
+  /quiz/results/{userId}:
+    get:
+      summary: "Fetch quiz results for a user"
+      parameters:
+        - name: userId
+          in: path
+          required: true
+          schema:
+            type: string
+            example: "123456"
+      responses:
+        "200":
+          description: "Successfully fetched quiz results"
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  dogBreed:
+                    type: string
+                  kennelClubLink:
+                    type: string
+                example:
+                  dogBreed: "Golden Retriever"
+                  kennelClubLink: "https://grca.org"
+        "404":
+          description: "User not found"
+        "500":
+          description: "Internal server error"
+      x-amazon-apigateway-integration:
+        type: "aws_proxy"
+        httpMethod: "GET"
+        uri: "arn:aws:apigateway:<region>:lambda:path/2015-03-31/functions/<lambda-arn>/invocations"
