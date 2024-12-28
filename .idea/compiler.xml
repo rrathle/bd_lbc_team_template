@@ -5,6 +5,10 @@
       <module name="bd_lbc_team_template.app" target="11" />
       <module name="bd_lbc_team_template.app.main" target="11" />
       <module name="bd_lbc_team_template.app.test" target="11" />
+      <module name="bd_lbc_team_template.src.main" target="11" />
+      <module name="bd_lbc_team_template.src.test" target="11" />
+      <module name="main.main" target="16" />
+      <module name="main.test" target="16" />
     </bytecodeTargetLevel>
   </component>
 </project>
