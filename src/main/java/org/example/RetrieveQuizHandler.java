@@ -10,7 +10,7 @@ import software.amazon.awssdk.services.dynamodb.model.GetItemResponse;
 import java.util.HashMap;
 import java.util.Map;
 
-public class RetrieveQuizHandler implements RequestHandler<Map<String, String>, Map<String, Object>> {
+public class  RetrieveQuizHandler implements RequestHandler<Map<String, String>, Map<String, Object>> {
 
     private final DynamoDbClient dynamoDbClient;
 
@@ -35,7 +35,7 @@ public class RetrieveQuizHandler implements RequestHandler<Map<String, String>, 
 
             // Retrieve quiz results from DynamoDB
             GetItemRequest getItemRequest = GetItemRequest.builder()
-                    .tableName("QuizResults") // Your DynamoDB table name
+                    .tableName("DogQuizResults") // DynamoDB table name
                     .key(Map.of("quizId", AttributeValue.builder().s(quizId).build()))
                     .build();
 

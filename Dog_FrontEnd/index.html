@@ -1,12 +1,86 @@
-<!doctype html> <!-- Important: must specify -->
-<html>
+<!--<!doctype html> &lt;!&ndash; Important: must specify &ndash;&gt;-->
+<!--<html>-->
+<!--<head>-->
+<!--    <meta charset="utf-8"> &lt;!&ndash; Important: rapi-doc uses utf8 characters &ndash;&gt;-->
+<!--    <script type="module" src="https://unpkg.com/rapidoc/dist/rapidoc-min.js"></script> &lt;!&ndash;The link to the Javascript that interprets the JSON and constructs the HTML for your page &ndash;&gt;-->
+<!--</head>-->
+<!--<body>-->
+<!--&lt;!&ndash; The link to the JSON file. If you take that link and put it into a browser, you'll find a lot of plain text formatted as JSON. &ndash;&gt;-->
+<!--&lt;!&ndash;<rapi-doc spec-url = "https://dogquizeast.s3.us-east-1.amazonaws.com/api.json"></rapi-doc>&ndash;&gt;-->
+<!--<rapi-doc spec-url = "https://dogquizeast.s3.us-east-1.amazonaws.com/openApi.json"></rapi-doc>-->
+<!--</body>-->
+<!--</html>-->
+
+<!DOCTYPE html>
+<html lang="en">
 <head>
-    <meta charset="utf-8"> <!-- Important: rapi-doc uses utf8 characters -->
-    <script type="module" src="https://unpkg.com/rapidoc/dist/rapidoc-min.js"></script> <!--The link to the Javascript that interprets the JSON and constructs the HTML for your page -->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dog Quiz</title>
+    <link rel="stylesheet" href="style.css">
+    <script type="module" src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
 </head>
 <body>
-<!-- The link to the JSON file. If you take that link and put it into a browser, you'll find a lot of plain text formatted as JSON. -->
-<!--<rapi-doc spec-url = "https://dogquizeast.s3.us-east-1.amazonaws.com/api.json"></rapi-doc>-->
-<rapi-doc spec-url = "https://dogquizeast.s3.us-east-1.amazonaws.com/openapi.json"></rapi-doc>
+<div class="container">
+    <h1>Dog Quiz</h1>
+
+    <!-- Quiz Form -->
+    <form id="quiz-form">
+        <label for="sizePreference">Size Preference:</label>
+        <select id="sizePreference">
+            <option value="Small">Small</option>
+            <option value="Medium">Medium</option>
+            <option value="Large">Large</option>
+        </select>
+
+        <label for="energyPreference">Energy Preference:</label>
+        <select id="energyPreference">
+            <option value="Low">Low</option>
+            <option value="Moderate">Moderate</option>
+            <option value="High">High</option>
+        </select>
+
+        <label for="hypoallergenic">Hypoallergenic:</label>
+        <select id="hypoallergenic">
+            <option value="Yes">Yes</option>
+            <option value="No">No</option>
+        </select>
+
+        <button type="submit">Get Recommendation</button>
+    </form>
+
+    <!-- Result Display -->
+    <div id="result" class="hidden">
+        <h2>Recommended Dog Breed:</h2>
+        <p id="dog-breed"></p>
+        <p><a id="kennel-club-link" href="#" target="_blank">Learn more</a></p>
+    </div>
+
+    <!-- Quiz ID Section -->
+    <div id="quiz-id-section" class="hidden">
+        <h3>Your Quiz ID:</h3>
+        <p id="quiz-id"></p>
+        <button id="copy-id-btn">Copy Quiz ID</button>
+        <small>Save this ID to retrieve your results later.</small>
+    </div>
+
+    <!-- Lookup Form -->
+    <div id="lookup-section">
+        <h3>Look Up Your Quiz Results</h3>
+        <form id="lookup-form">
+            <label for="lookupQuizId">Enter your Quiz ID:</label>
+            <input type="text" id="lookupQuizId" required />
+            <button type="submit">Look Up</button>
+        </form>
+        <div id="lookup-result" class="hidden">
+            <h4>Quiz Results</h4>
+            <p><strong>Dog Breed:</strong> <span id="lookup-dog-breed"></span></p>
+            <p><strong>Learn More:</strong> <a id="lookup-kennel-link" href="#" target="_blank"></a></p>
+        </div>
+    </div>
+</div>
+
+<script src="app.js"></script>
 </body>
 </html>
+

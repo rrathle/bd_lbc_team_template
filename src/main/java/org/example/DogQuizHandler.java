@@ -3,10 +3,7 @@ package org.example;
 import com.amazonaws.services.lambda.runtime.Context;
 import com.amazonaws.services.lambda.runtime.RequestHandler;
 import software.amazon.awssdk.services.dynamodb.DynamoDbClient;
-import software.amazon.awssdk.services.dynamodb.model.PutItemRequest;
-import software.amazon.awssdk.services.dynamodb.model.QueryRequest;
-import software.amazon.awssdk.services.dynamodb.model.QueryResponse;
-import software.amazon.awssdk.services.dynamodb.model.AttributeValue;
+import software.amazon.awssdk.services.dynamodb.model.*;
 
 import java.util.HashMap;
 import java.util.List;
@@ -65,6 +62,9 @@ public class DogQuizHandler implements RequestHandler<Map<String, String>, Map<S
 
         } catch (Exception e) {
             context.getLogger().log("Error occurred: " + e.getMessage());
+            for (StackTraceElement element : e.getStackTrace()) {
+                context.getLogger().log(element.toString());
+            }
             response.put("statusCode", 500);
             response.put("error", "Internal Server Error");
         }
@@ -73,44 +73,47 @@ public class DogQuizHandler implements RequestHandler<Map<String, String>, Map<S
     }
 
     private DogBreed determineBestMatch(String sizePreference, String energyPreference, String hypoallergenic) {
-        QueryRequest queryRequest = QueryRequest.builder()
+        // Scan the table for matching items
+        ScanRequest scanRequest = ScanRequest.builder()
                 .tableName("DogBreeds")
-                .keyConditionExpression("size = :size")
-                .filterExpression("energy_level = :energy AND contains(traits, :hypoallergenic)")
+                .filterExpression("size = :size AND energy = :energy AND hypoallergenic = :hypoallergenic")
                 .expressionAttributeValues(Map.of(
                         ":size", AttributeValue.builder().s(sizePreference).build(),
                         ":energy", AttributeValue.builder().s(energyPreference).build(),
-                        ":hypoallergenic", AttributeValue.builder().s(hypoallergenic.equalsIgnoreCase("Yes") ? "Hypoallergenic" : "").build()
+                        ":hypoallergenic", AttributeValue.builder().s(hypoallergenic).build()
                 ))
                 .build();
 
-        QueryResponse queryResponse = dynamoDbClient.query(queryRequest);
+        ScanResponse scanResponse = dynamoDbClient.scan(scanRequest);
 
-        if (queryResponse.count() > 0) {
-            Map<String, AttributeValue> item = queryResponse.items().get(0);
+        if (scanResponse.count() > 0) {
+            Map<String, AttributeValue> item = scanResponse.items().get(0);
             return mapToDogBreed(item);
         }
         return null;
     }
 
+
+
     private DogBreed determinePartialMatch(String sizePreference, String energyPreference, String hypoallergenic) {
-        QueryRequest queryRequest = QueryRequest.builder()
+        ScanRequest scanRequest = ScanRequest.builder()
                 .tableName("DogBreeds")
-                .keyConditionExpression("size = :size OR energy_level = :energy")
+                .filterExpression("size = :size OR energy = :energy")
                 .expressionAttributeValues(Map.of(
                         ":size", AttributeValue.builder().s(sizePreference).build(),
                         ":energy", AttributeValue.builder().s(energyPreference).build()
                 ))
                 .build();
 
-        QueryResponse queryResponse = dynamoDbClient.query(queryRequest);
+        ScanResponse scanResponse = dynamoDbClient.scan(scanRequest);
 
-        if (queryResponse.count() > 0) {
-            Map<String, AttributeValue> item = queryResponse.items().get(0);
+        if (scanResponse.count() > 0) {
+            Map<String, AttributeValue> item = scanResponse.items().get(0);
             return mapToDogBreed(item);
         }
         return null;
     }
+
 
     private DogBreed mapToDogBreed(Map<String, AttributeValue> item) {
         if (item == null || item.isEmpty()) return null;
@@ -122,7 +125,7 @@ public class DogQuizHandler implements RequestHandler<Map<String, String>, Map<S
         return new DogBreed(
                 item.get("dogBreed").s(),
                 item.get("size").s(),
-                item.get("energy_level").s(),
+                item.get("energy").s(),
                 traits,
                 item.get("kennel_club_link").s()
         );
