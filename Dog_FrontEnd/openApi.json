@@ -4,16 +4,10 @@
     "title": "DogQuiz",
     "version": "0.0.2"
   },
-  "servers": [
-    {
-      "url": "https://a3cha3mfzd.execute-api.us-east-1.amazonaws.com/dev",
-      "description": "DogQuiz API Gateway"
-    }
-  ],
   "paths": {
     "/quiz/recommend/{sizePreference}/{energyPreference}/{hypoallergenic}": {
       "post": {
-        "description": "accepts quiz answers, calculates a recommended dog breed, and returns the userId, and saves the results",
+        "description": "accepts quiz answers and calculates the reccomeneded dog breed, and returns the userId",
         "parameters": [
           {
             "name": "sizePreference",
@@ -21,7 +15,7 @@
             "required": true,
             "schema": {
               "type": "string",
-              "example": "Small, Medium or, Large"
+              "example": "Medium"
             }
           },
           {
@@ -30,7 +24,7 @@
             "required": true,
             "schema": {
               "type": "string",
-              "example": "Low, Moderate, High"
+              "example": "low"
             }
           },
           {
@@ -39,7 +33,7 @@
             "required": true,
             "schema": {
               "type": "string",
-              "example": "No or Yes"
+              "example": "No"
             }
           }
         ],
